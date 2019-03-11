@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="warTarget"  basedir=".">
+    
+    <property name="tomcat" value="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79" />
+    <property name="tomcat.deployment" value="${tomcat}/webapps" />
+    <property name="tomcat.bin" value="${tomcat}/bin" />
+    <property name="base" value="." />
+    <property name="src.dir" value="${base}/src"/>
+    <property name="build.dir" value="${base}/build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="pages" value="${base}/WebContent" />
+    <path id="Apache Tomcat v7.0 [Apache Tomcat v7.0].libraryclasspath">
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/annotations-api.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/catalina-ant.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/catalina-ha.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/catalina-tribes.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/catalina.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/ecj-4.4.2.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/el-api.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/jasper-el.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/jasper.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/jsp-api.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/servlet-api.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-api.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-coyote.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-dbcp.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-i18n-es.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-i18n-fr.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-i18n-ja.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-jdbc.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-util.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat7-websocket.jar"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/websocket-api.jar"/>
+    </path>
+    <path id="JavaDemoApp.classpath">
+        <pathelement location="build/classes"/>
+        <path refid="Apache Tomcat v7.0 [Apache Tomcat v7.0].libraryclasspath"/>
+        <pathelement location="C:/WebServer/apache-tomcat-7.0.79-windows-x64/apache-tomcat-7.0.79/lib/tomcat-util.jar"/>
+    </path>
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"
+            classpathref="JavaDemoApp.classpath" includeantruntime="false" />
+    </target>
+    <target name="warTarget" depends="compile">
+        <war warfile="JavaDemoApp.war" webxml="WebContent/WEB-INF/web.xml" update="true" >
+            <classes dir="${classes.dir}"/>
+            <fileset dir="${pages}"/>
+        </war>
+        <antcall target="deployTarget_Staging" />
+    </target>
+    <target name="deployTarget_Staging">
+        <copy file="${base}/JavaDemoApp.war" todir="C:/Users/ac221/learn-chef/cookbooks/deployment_windows/files/default"/>
+        <antcall target="deployTarget_Production" />
+    </target>
+	<target name="deployTarget_Production">
+        <copy file="${base}/JavaDemoApp.war" todir="C:/Users/ac221/learn-chef/cookbooks/deployment_windows_production/files/default"/>
+        <antcall target="startTarget" />
+	 </target>
+    <target name="startTarget">
+        <exec executable="${tomcat.bin}/startup.bat"/>
+    </target>
+    <target name="stopTarget">
+        <exec executable="${tomcat.bin}/shutdown.bat" />
+    </target>
+</project>

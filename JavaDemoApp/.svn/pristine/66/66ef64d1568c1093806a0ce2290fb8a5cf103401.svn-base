@@ -1,0 +1,17 @@
+package com.model;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class firstJUnitTC 
+{
+
+	@Test
+	public void testUser() 
+	{
+		//JUnit test=new JuUit();
+		
+	}
+
+}
