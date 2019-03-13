@@ -6,7 +6,7 @@ public class User {
 	
 	public User(String userId, String password){
 		this.userId = userId;
-		this.password = password;
+		this.password = password;//
 	}
 	
 	public String getUserId() {
