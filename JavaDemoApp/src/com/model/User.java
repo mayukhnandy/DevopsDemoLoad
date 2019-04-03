@@ -21,6 +21,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 		//Comment Added for Backlog 38 modified.
-		//Comment added for Backlog 39.
+		//Comment added for Backlog 39
 	}
 }
