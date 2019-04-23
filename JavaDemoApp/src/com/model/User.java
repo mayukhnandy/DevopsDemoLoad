@@ -19,8 +19,7 @@ public class User {
 		return password;
 	}
 	public void setPassword(String password) {
-		this.password = password;
-		
+		this.password = password;		
 		// Comment added for Backlog 118
 	}
 }
